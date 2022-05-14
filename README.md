@@ -39,7 +39,7 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
   ![alt-text](ressources/sudol.png)
 
 - Nous pouvons exécuter ce script python dans notre dossier en tant que utilisateur yen.
-- Un module est juste un fichier python avec des fonctions qui peuvent être référencées. Ainsi, lorsque la ligne d'importation aléatoire est exécutée, le script recherche ce fichier random.py. Nous pouvons savoir où il recherche ce fichier random.py.
+- Un module est juste un fichier python avec des fonctions qui peuvent être référencées. Ainsi, lorsque la ligne d'importation random est exécutée, le script recherche ce fichier random.py. Nous pouvons savoir où il recherche ce fichier random.py.
 
     ```bash
   python3.6 -c 'import sys; print(sys.path)'
@@ -77,7 +77,7 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
     ```
   ![alt-text](ressources/lslha2.png)
 - Nous avons un fichier qui appartient à root, mais lisible par yen. Il semble que nous ayons besoin d'un autre niveau de privesc.
-- Une fois executé nous obtenons un segfault, après avoir vérifié avec valgrind on se rend compte que c'est un faux segfautl. Donc probablement pas un d'erreur mémoire exploitable. 
+- Une fois executé nous obtenons un segfault, après avoir vérifié avec valgrind on se rend compte que c'est un faux segfault. Donc probablement pas un d'erreur mémoire exploitable. 
     
   ![alt-text](ressources/portal.png)
 
@@ -147,7 +147,7 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
 
 - Maintenant, lorsque date est exécuté, il génère un shell. Étant donné que l'uid et le gid sont définis sur ceux de l'utilisateur geralt, lorsque le programme de date est exécuté dans le binaire portal, il générera un shell en tant qu'utilisateur geralt.
 
-![alt-text](ressources/portal_succes.png)
+    ![alt-text](ressources/portal_succes.png)
 
 ### geralt
 
@@ -159,16 +159,16 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
 
 - On observe que l'utilisateur peut exécuter un programme ou un script en langage Perl en tant qu'utilisateur root. Par conséquent, on exécute ce Perl one-liner pour récupérer le shell en root.
 
-```bash
-sudo perl -e 'exec "/bin/bash";'
-```
-![alt-text](ressources/perl.png)
+    ```bash
+    sudo perl -e 'exec "/bin/bash";'
+    ```
+    ![alt-text](ressources/perl.png)
 
 - Nous somme maintenant en root, et nous pouvons consulter le fichier root.txt.
  
-```bash
- cat ../../root/root.txt
- ```
+    ```bash
+     cat ../../root/root.txt
+     ```
 
 
 
