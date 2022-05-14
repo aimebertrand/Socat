@@ -11,6 +11,8 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
 
 # Room 1 - Toss a coin 
 
+![alt text](ressources/toss_a_coin.png)
+
 ## user.txt ?
 
 
