@@ -181,7 +181,7 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
 ![alt-text](ressources/Bananier/muso_troglodytarum.png)
 ## user.txt ?
 
-- Après avoir lancé la VM de la room 3, on se rend rapidement compte grâce à nmap ( ou en allant directement à http://10.10.***.***) que cette VM héberge un "site web".
+- Après avoir lancé la VM de la room 3, on se rend rapidement compte grâce à nmap ( ou en allant directement à http://10.10.000.000) que cette VM héberge un "site web".
 On utilise dirbuster (ou toute solution équivalente fonctionnera) pour exposer l'arborescence des fichiers existant le dossier exposer par le serveur web.
 
 - Parmi la multitude de path retournés par dirbuster c'est le "http://10.10.000.000:80/assets qui nous intéressent.
