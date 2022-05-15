@@ -178,23 +178,55 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
 
 
 # Room 3 - Muso Troglodytarum
+![alt-text](ressources/Bananier/muso_troglodytarum.png)
 ## user.txt ?
 
-Après avoir lancé la VM de la room 3, on se rend rapidement compte grace a nmap ( ou en allant directement à http://10.10.***.***) que cette VM héberge un "site web".
-On utilise donc dirbuster (ou toute solution équivalente fonctionnera) pour exposer l'arborescence des fichiers existant le dossier exposer par le server web.
+- Après avoir lancé la VM de la room 3, on se rend rapidement compte grâce à nmap ( ou en allant directement à http://10.10.***.***) que cette VM héberge un "site web".
+On utilise dirbuster (ou toute solution équivalente fonctionnera) pour exposer l'arborescence des fichiers existant le dossier exposer par le serveur web.
 
-Parmi la multitude de path retourné par dirbuster c'est le "http://10.10.***.***:80/assets qui nous interesse.
-/*incert photo*/
+- Parmi la multitude de path retournés par dirbuster c'est le "http://10.10.000.000:80/assets qui nous intéressent.
 
-C'est dans le fichier style.css qu'on trouve notre prochaine piste.
-/*incert photo*/
+![alt-text](ressources/Bananier/assets.png)
 
-Arrivé sur cette page, prenait garder à désactiver le javascript, on remarque un truc interessant du coté des requêtes:
-/*incert photo*/
+- C'est dans le fichier style.css qu'on trouve notre prochaine piste.
+Arrivé sur cette page, prenez garder à désactiver le javascript. On remarque un truc intéressant du coté des requêtes:
 
-Du coup, on prend la valeur de l'attribut hidden_directory, et le rajoute a la notre url.
+![alt-text](ressources/Bananier/request_aiming_tohiddenD.png)
 
+- Du coup, on prend la valeur de l'attribut hidden_directory, et on le rajoute à notre url.
+Aucune "erreur 404" n'est retrouné, et on se retrouve sur le hidden_directory.
+On clique sur l'image .png, en lit son contenu grace au dossier source de google dev Tools.
+Tout en bas du fichier on trouve des indications sur comment nous connecter en ftp avec la VM.
+Il nous donne un username et une floppée de mots de passes.
+
+![alt-text](ressources/Bananier/hot_baby.png)
+
+- On pourrait les tester un à un, mais l'outils idéal pour nous serait hydra. On creer une worklist avec la liste de potentiel mots de passe et hydra se charge du reste.
+
+![alt-text](ressources/Bananier/hydra.png)
+
+- On n'est maintenant connecté en ftp, et le celle fichier qui nous est permit de voir est: Valerian\'s_Creds.txt
+les informations sont écrite en white space, aprés avoir décodé le contenu du fichier. 
+On se retrouve avec un user, valerian, et son mots de passe. On se connect donc en ssh à la VM.
+
+![alt-text](ressources/Bananier/white_space.png)
+
+- On utilise linpeas pour detecter d'évantuelle vulnérabilité. Et on n'a pas bien une vulnerabilté à exploité.
+
+![alt-text](ressources/Bananier/linpeas.png)
+
+- On utilise simplement la commande scp, pour envoyer les fichiers nécéssaire à exploiter la vulnerabilité sur notre VM.  
+
+    ```bash
+   scp -r CVE-2021-4034 valerian@10.10.196.14:/home/valerian
+    ```
+- On compile les fichier source a l'interieur de CVE-2021-4034, et on l'execute le fichier .c qui en result.
+Et voila! on est en roote.
+
+![alt-text](ressources/Bananier/root.png)
 
 
 ## root.txt ?
+
+En est déjà en route...
 
