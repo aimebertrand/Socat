@@ -178,3 +178,23 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
 
 
 # Room 3 - Muso Troglodytarum
+## user.txt ?
+
+Après avoir lancé la VM de la room 3, on se rend rapidement compte grace a nmap ( ou en allant directement à http://10.10.***.***) que cette VM héberge un "site web".
+On utilise donc dirbuster (ou toute solution équivalente fonctionnera) pour exposer l'arborescence des fichiers existant le dossier exposer par le server web.
+
+Parmi la multitude de path retourné par dirbuster c'est le "http://10.10.***.***:80/assets qui nous interesse.
+/*incert photo*/
+
+C'est dans le fichier style.css qu'on trouve notre prochaine piste.
+/*incert photo*/
+
+Arrivé sur cette page, prenait garder à désactiver le javascript, on remarque un truc interessant du coté des requêtes:
+/*incert photo*/
+
+Du coup, on prend la valeur de l'attribut hidden_directory, et le rajoute a la notre url.
+
+
+
+## root.txt ?
+
