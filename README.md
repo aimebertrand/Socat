@@ -15,6 +15,16 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
 
 ## user.txt ?
 
+- La VM heberge un site web, on utilise donc dirbuster pour retrouver l'arborescences des fichier contenu par le serveur web.
+
+![alt text](ressources/TAC/dirbuster.png)
+
+- Sur "/t/o/s/s/_/a/_/c/o/i/n/_/t/o/_/y/o/u/r/_/w/i/t/c/h/e/r/_/o/h/_/v/a/l/l/e/y/_/o/f/_/p/l/e/n/t/y/" on trouve dans le html de la page, un user et son mots de passe.
+
+![alt text](ressources/TAC/toss.png)
+
+- On se connect en ssh, et c'est bon. on n'a le premier lag dans dans le fichier user.txt.
+
 
 ## root.txt ?
 
