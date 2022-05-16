@@ -23,7 +23,7 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
 
 ![alt text](ressources/TAC/toss.png)
 
-- On se connect en ssh, et c'est bon. on n'a le premier lag dans dans le fichier user.txt.
+- On se connect en ssh, et c'est bon. on n'a le premier flag dans dans le fichier user.txt.
 
 
 ## root.txt ?
