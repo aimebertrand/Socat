@@ -357,7 +357,7 @@ On utilise dirbuster (ou toute solution équivalente fonctionnera) pour exposer 
 ![alt-text](ressources/Bananier/assets.png)
 
 - C'est dans le fichier style.css qu'on trouve notre prochaine piste.
-Arrivé sur cette page, prenez garder à désactiver le javascript. On remarque un truc intéressant du côté des requêtes :
+Arrivé sur cette page, prenez garde à désactiver le javascript. On remarque un truc intéressant du côté des requêtes :
 
 ![alt-text](ressources/Bananier/request_aiming_tohiddenD.png)
 
