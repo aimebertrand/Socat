@@ -2,7 +2,7 @@ Ceci est la documentation pour le projet Epitech SOCAT. Il s'agit d'un CTF (capt
 
 ## Sujet Traité :
 
-Etude des vulnérabilités de machines virtuelles.
+Étude des vulnérabilités de machines virtuelles.
 
 ## Liste non exhaustive des domaines que nous couvrirons :
 Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, synchronisation, pièges de langage, escalade de privilèges, etc.
@@ -15,15 +15,15 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
 
 ## user.txt ?
 
-- La VM heberge un site web, on utilise donc dirbuster pour retrouver l'arborescences des fichier contenu par le serveur web.
+- La VM héberge un site web, on utilise donc Dirbuster pour retrouver l'arborescences des fichiers contenu par le serveur web.
 
 ![alt text](ressources/TAC/dirbuster.png)
 
-- Sur "/t/o/s/s/_/a/_/c/o/i/n/_/t/o/_/y/o/u/r/_/w/i/t/c/h/e/r/_/o/h/_/v/a/l/l/e/y/_/o/f/_/p/l/e/n/t/y/" on trouve dans le html de la page, un user et son mots de passe.
+- Sur "/t/o/s/s/_/a/_/c/o/i/n/_/t/o/_/y/o/u/r/_/w/i/t/c/h/e/r/_/o/h/_/v/a/l/l/e/y/_/o/f/_/p/l/e/n/t/y/" on trouve dans le html de la page, un user et son mot de passe.
 
 ![alt text](ressources/TAC/toss.png)
 
-- On se connect en ssh, et c'est bon. on n'a le premier flag dans dans le fichier user.txt.
+- On se connect en ssh, et c'est bon. On n'a le premier flag dans le fichier user.txt.
 
 
 ## root.txt ?
@@ -50,7 +50,7 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
     ```
   ![alt-text](ressources/sudol.png)
 
-- Nous pouvons exécuter ce script python dans notre dossier en tant que utilisateur yen.
+- Nous pouvons exécuter ce script python dans notre dossier en tant qu'utilisateur yen.
 - Un module est juste un fichier python avec des fonctions qui peuvent être référencées. Ainsi, lorsque la ligne d'importation random est exécutée, le script recherche ce fichier random.py. Nous pouvons savoir où il recherche ce fichier random.py.
 
     ```bash
@@ -89,7 +89,7 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
     ```
   ![alt-text](ressources/lslha2.png)
 - Nous avons un fichier qui appartient à root, mais lisible par yen. Il semble que nous ayons besoin d'un autre niveau de privesc.
-- Une fois executé nous obtenons un segfault, après avoir vérifié avec valgrind on se rend compte que c'est un faux segfault. Donc probablement pas un d'erreur mémoire exploitable. 
+- Une fois exécuté nous obtenons un segfault, après avoir vérifié avec Valgrind on se rend compte que c'est un faux segfault. Donc probablement pas un d'erreur mémoire exploitable. 
     
   ![alt-text](ressources/portal.png)
 
@@ -98,7 +98,7 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
     python3 -m http.server 8000
     ```
   
-- Sur notre machine hote
+- Sur notre machine hôte
   ```bash
   wget http://10.10.250.243:8000/portal
   ```
@@ -209,7 +209,7 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
 
   ![alt-text](ressources/reallyHidden.png)
 
-- On peut le récuperre via la commande :
+- On peut le récupère via la commande :
 
     ```bash
     mget .reallyHidden
@@ -234,7 +234,7 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
 - Celui-ci est un hash. Afin de récupérer le password, nous devons le déchiffrer sur le site [cyberchef](https://cyberchef.org/)
 
 - Cyberchef est un site qui propose une très longue liste de fonctions qui vous permettront de faire en vrac du codage, décodage (XOR, Base64…etc.), du chiffrement, déchiffrement (AES, DES, Blowfish), de la conversion de fichiers ou de formats, du dump en hexadécimal, de la création de binaires, de la compression, décompression de fichiers, du calcul de hash, du parsing de date ou d’IP…etc., etc
-- Nous allons donc utiliser la fonction "magic" pour decoder ce hash et obtenir notre flag
+- Nous allons donc utiliser la fonction "magic" pour décoder ce hash et obtenir notre flag
 
   ![alt-text](ressources/cyberchef.png)
 
@@ -242,7 +242,7 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
 
 # hagrid
 
-- Une fois connecté en tant que Hagrid en ssh, nous avons un script bash qui affiche seulement un message. Nous allons utliser les cron jobs pour privesc.
+- Une fois connecté en tant que Hagrid en ssh, nous avons un script bash qui affiche seulement un message. Nous allons utiliser les cron jobs pour privesc.
 - Cron est un planificateur de tâches dans les systèmes d'exploitation basés sur Unix. Il nous permet de programmer des tâches à exécuter périodiquement.
 - Par défaut, les cron jobs s'exécute en tant que root lors de l'exécution de /etc/crontab, de sorte que toutes les commandes ou tous les scripts appelés par le crontab s'exécuteront également en tant que root.
 - En consultant le fichier /etc/crontabs nous pouvons voir que ron va exécuter hut.sh lorsqu'on reboot.
@@ -275,7 +275,7 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
   ```bash
   nc -lvnp 1234
   ```
-- Nous allons ensuite reboot sur la machine attaquée. Lors de l'exécution de /sbin/reboot pour redémarrer le système, un rappel sur l'écouteur Netcat est reçu, donnat un shell en tant qu'utilisateur ron
+- Nous allons ensuite reboot sur la machine attaquée. Lors de l'exécution de /sbin/reboot pour redémarrer le système, un rappel sur l'écouteur Netcat est reçu, donnant un shell en tant qu'utilisateur ron
   ```bash
   reboot
   ```
@@ -284,17 +284,17 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
 
 ### Ron
 
-- Une fois connécte au shell de ron nous avons accès au fichiers dumbledore.txt
-- Celui ci est composé de plusiseurs hash. Nous allons donc utiliser le site cyberchef pour déchiffrer les hash
+- Une fois conncté au shell de ron nous avons accès au fichier dumbledore.txt
+- Celui-ci est composé de plusieurs hash. Nous allons donc utiliser le site cyberchef pour déchiffrer les hash
   ![alt-text](ressources/dumbledore.png)
-- Nous allons encore utiliser la fonction "magic" pour decoder le bon hash.
+- Nous allons encore utiliser la fonction "magic" pour décoder le bon hash.
 - Ainsi nous obtenons le mdp de dumbledore.
 
 
 ### dumbledore
 
 - On se connecte en ssh avec hagrid
-- ensuite on change de user avec la commande su
+- Ensuite on change d'user avec la commande su
 
     ```bash
     su dumbledore
@@ -326,7 +326,7 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
 
 ### harry
 
-- En exécutant le script d'énumeration linpeas, ll semble qu'il existe une règle Sudo pour l'utilisateur harry dans le fichier /etc/sudoers.d/harry
+- En exécutant le script d'énumération linpeas, il semble qu'il existe une règle Sudo pour l'utilisateur harry dans le fichier /etc/sudoers.d/harry
 
   ![alt-text](ressources/sudoers.png)
 
@@ -349,7 +349,7 @@ Reverse Engineering, cryptographie, encodage, gestion des erreurs, protocoles, s
 ![alt-text](ressources/Bananier/muso_troglodytarum.png)
 ## user.txt ?
 
-- Après avoir lancé la VM de la room 3, on se rend rapidement compte grâce à nmap ( ou en allant directement à http://10.10.000.000) que cette VM héberge un "site web".
+- Après avoir lancé la VM de la room 3, on se rend rapidement compte grâce à nmap (ou en allant directement à http://10.10.000.000) que cette VM héberge un "site web".
 On utilise dirbuster (ou toute solution équivalente fonctionnera) pour exposer l'arborescence des fichiers existant le dossier exposer par le serveur web.
 
 - Parmi la multitude de path retournés par dirbuster c'est le "http://10.10.000.000:80/assets qui nous intéressent.
@@ -357,44 +357,44 @@ On utilise dirbuster (ou toute solution équivalente fonctionnera) pour exposer 
 ![alt-text](ressources/Bananier/assets.png)
 
 - C'est dans le fichier style.css qu'on trouve notre prochaine piste.
-Arrivé sur cette page, prenez garder à désactiver le javascript. On remarque un truc intéressant du coté des requêtes:
+Arrivé sur cette page, prenez garder à désactiver le javascript. On remarque un truc intéressant du côté des requêtes :
 
 ![alt-text](ressources/Bananier/request_aiming_tohiddenD.png)
 
 - Du coup, on prend la valeur de l'attribut hidden_directory, et on le rajoute à notre url.
-Aucune "erreur 404" n'est retrouné, et on se retrouve sur le hidden_directory.
-On clique sur l'image .png, en lit son contenu grace au dossier source de google dev Tools.
+Aucune "erreur 404" n'est retourné, et on se retrouve sur le hidden_directory.
+On clique sur l'image .png, on lit son contenu grâce au dossier source de google dev Tools.
 Tout en bas du fichier on trouve des indications sur comment nous connecter en ftp avec la VM.
 Il nous donne un username et une floppée de mots de passes.
 
 ![alt-text](ressources/Bananier/hot_baby.png)
 
-- On pourrait les tester un à un, mais l'outils idéal pour nous serait hydra. On creer une worklist avec la liste de potentiel mots de passe et hydra se charge du reste.
+- On pourrait les tester un à un, mais l'outils idéal pour nous serait hydra. On créer une worklist avec la liste de potentiel mots de passe et hydra se charge du reste.
 
 ![alt-text](ressources/Bananier/hydra.png)
 
-- On n'est maintenant connecté en ftp, et le celle fichier qui nous est permit de voir est: Valerian\'s_Creds.txt
-les informations sont écrite en white space, aprés avoir décodé le contenu du fichier. 
-On se retrouve avec un user, valerian, et son mots de passe. On se connect donc en ssh à la VM.
+- On n'est maintenant connecté en ftp, et le fichier qui nous est permis de voir est: Valerian\'s_Creds.txt
+les informations sont écrite en white space, après avoir décodé le contenu du fichier. 
+On se retrouve avec un user, valerian, et son mot de passe. On se connecte donc en ssh à la VM.
 
 ![alt-text](ressources/Bananier/white_space.png)
 
-- On utilise linpeas pour detecter d'évantuelle vulnérabilité. Et on n'a pas bien une vulnerabilté à exploité.
+- On utilise linpeas pour détecter d'éventuelle vulnérabilité. Et on n'a pas bien une vulnerabilité à exploité.
 
 ![alt-text](ressources/Bananier/linpeas.png)
 
-- On utilise simplement la commande scp, pour envoyer les fichiers nécéssaire à exploiter la vulnerabilité sur notre VM.  
+- On utilise simplement la commande scp, pour envoyer les fichiers nécessaires à exploiter la vulnerabilité sur notre VM.  
 
     ```bash
    scp -r CVE-2021-4034 valerian@10.10.196.14:/home/valerian
     ```
-- On compile les fichier source a l'interieur de CVE-2021-4034, et on l'execute le fichier .c qui en result.
-Et voila! on est en roote.
+- On compile les fichier source a l'intérieur de CVE-2021-4034, et on l'execute l'éxecutable qui en resulte.
+Et voila! on est en root.
 
 ![alt-text](ressources/Bananier/root.png)
 
 
 ## root.txt ?
 
-En est déjà en route...
+En est déjà en root...
 
